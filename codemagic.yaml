@@ -13,14 +13,18 @@ workflows:
       - name: Clean build
         script: flutter clean
 
-      - name: Build iOS archive
+      - name: Build iOS
         script: flutter build ios --release --no-codesign
 
       - name: Create IPA manually
         script: |
+          set -e
+
           mkdir -p build/ios/ipa
 
           cd build/ios/iphoneos
+
+          rm -rf Payload
           mkdir Payload
           cp -r Runner.app Payload/
 
