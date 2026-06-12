@@ -20,9 +20,9 @@ workflows:
         script: |
           set -e
 
-          mkdir -p build/ios/ipa
+          mkdir -p $CM_BUILD_DIR/build/ios/ipa
 
-          cd build/ios/iphoneos
+          cd $CM_BUILD_DIR/build/ios/iphoneos
 
           rm -rf Payload
           mkdir Payload
@@ -30,7 +30,7 @@ workflows:
 
           zip -r App.ipa Payload
 
-          mv App.ipa ../../ipa/
+          mv App.ipa $CM_BUILD_DIR/build/ios/ipa/
 
     artifacts:
       - build/ios/ipa/*.ipa
