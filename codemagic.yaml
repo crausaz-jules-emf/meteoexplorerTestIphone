@@ -1,20 +1,32 @@
 workflows:
   ios-workflow:
-    name: iOS Flutter Build
+    name: iOS Flutter Build (SideStore)
     max_build_duration: 60
 
     environment:
       flutter: stable
 
     scripts:
-      - name: Install dependencies
+      - name: Get dependencies
         script: flutter pub get
 
-      - name: Prepare iOS
-        script: flutter precache --ios
+      - name: Clean build
+        script: flutter clean
 
-      - name: Build IPA (no codesign)
-        script: flutter build ipa --release --no-codesign
+      - name: Build iOS archive
+        script: flutter build ios --release --no-codesign
+
+      - name: Create IPA manually
+        script: |
+          mkdir -p build/ios/ipa
+
+          cd build/ios/iphoneos
+          mkdir Payload
+          cp -r Runner.app Payload/
+
+          zip -r App.ipa Payload
+
+          mv App.ipa ../../ipa/
 
     artifacts:
       - build/ios/ipa/*.ipa
